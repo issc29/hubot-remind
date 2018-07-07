@@ -68,7 +68,7 @@ module.exports = (robot) ->
       handleNewJob robot, msg, users[0], moment().add(at, timeWord).toDate(), something
     else if users.length > 1
       msg.send "Be more specific, I know #{users.length} people " +
-          "named like that: #{(user.name for user in users).join(", ")}"
+        "named like that: #{(user.name for user in users).join(", ")}"
     else
       msg.send "#{name}? Never heard of 'em"
 
@@ -155,9 +155,10 @@ class Job
   sendMessage: (robot) ->
     envelope = user: @user, room: @user.room
     message = @message
-    if @user.mention_name
-      message = "Hey @#{envelope.user.mention_name} remember: " + @message
+    if robot.adapterName == 'discord'
+      mention = "<@#{envelope.user.id}>"
     else
-      message = "Hey @#{envelope.user.name} remember: " + @message
+      mention = "@#{envelope.user.mention_name || envelope.user.name}"
+    message = "Hey #{mention} remember: " + @message
     robot.send envelope, message
 
