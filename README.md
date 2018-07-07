@@ -7,7 +7,7 @@ This hubot script is based on `hubot-cron`
 ## Install
 
 ```
-npm install hubot-remind --save
+npm install hubot-reminders --save
 ```
 
 ## How to use it
