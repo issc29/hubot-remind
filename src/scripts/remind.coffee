@@ -11,7 +11,7 @@ cronJob = require('cron').CronJob
 moment = require('moment')
 
 JOBS = {}
-BRAIN_JOBS = [];
+BRAIN_JOBS = []
 
 createNewJob = (robot, pattern, user, message) ->
   id = Math.floor(Math.random() * 1000000) while !id? || JOBS[id]
@@ -25,9 +25,9 @@ registerNewJob = (robot, id, pattern, user, message) ->
   job = new Job(id, pattern, user, message)
   job.start(robot)
   JOBS[id] = job
-  BRAIN_JOBS.push({id: id, pattern: pattern, user: user, message: message})
+  BRAIN_JOBS.push({ id: id, pattern: pattern, user: user, message: message })
 
-unregisterJob = (robot, id)->
+unregisterJob = (robot, id) ->
   if JOBS[id]
     JOBS[id].stop()
     delete JOBS[id]
@@ -45,7 +45,7 @@ handleNewJob = (robot, msg, user, pattern, message) ->
   msg.send "Got it! I will remind #{user.name} at #{pattern}"
 
 
-saveJobs = (robot)->
+saveJobs = (robot) ->
   robot.brain.set 'hubot-remind-reminders', BRAIN_JOBS
   robot.brain.save()
 
@@ -84,7 +84,7 @@ module.exports = (robot) ->
       thingsToRemind = []
     console.log('loaded ' + thingsToRemind.length + ' reminders from brain')
     currentDate = new Date()
-    thingsToRemind.forEach (thing)->
+    thingsToRemind.forEach (thing) ->
       if currentDate < thing.pattern
         registerNewJobFromBrain robot, thing.id, thing.pattern, thing.user, thing.message
 
@@ -135,7 +135,7 @@ class Job
     @pattern = pattern
     # cloning user because adapter may touch it later
     clonedUser = {}
-    clonedUser[k] = v for k,v of user
+    clonedUser[k] = v for k, v of user
     @user = clonedUser
     @message = message
 
@@ -153,7 +153,7 @@ class Job
     [@pattern, @user, @message]
 
   sendMessage: (robot) ->
-    envelope = user: @user, room: @user.room
+    envelope = { user: @user, room: @user.room }
     message = @message
     if robot.adapterName == 'discord'
       mention = "<@#{envelope.user.id}>"
