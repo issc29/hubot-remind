@@ -80,7 +80,7 @@ module.exports = (robot) ->
       loaded = true
     try
       thingsToRemind = robot.brain.get('hubot-remind-reminders') || []
-    catch
+    catch e
       thingsToRemind = []
     console.log('loaded ' + thingsToRemind.length + ' reminders from brain')
     currentDate = new Date()
